@@ -1,20 +1,21 @@
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { updateSymbol, AppAction } from '../redux/actions/dataActions'; // Added AppAction import
+import { updateSymbol, AppAction } from '../redux/actions/dataActions'; // Keep the AppAction import
 
-// Step 1: Define the props type
-type ChangeSymbolModalProps = {
+interface ChangeSymbolModalProps {
   onClose: () => void;
-};
+}
 
-const ChangeSymbolModal = ({ onClose }: ChangeSymbolModalProps) => {
+const ChangeSymbolModal: React.FC<ChangeSymbolModalProps> = ({ onClose }) => {
   const [symbol, setSymbol] = useState('');
   const dispatch = useDispatch();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => setSymbol(e.target.value);
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    dispatch(updateSymbol(symbol) as AppAction); // Added casting to AppAction
+    // First cast to unknown, then to AppAction
+    const action = updateSymbol(symbol) as unknown as AppAction;
+    dispatch(action);
     onClose(); // Close modal after dispatch
   };
 
@@ -28,3 +29,5 @@ const ChangeSymbolModal = ({ onClose }: ChangeSymbolModalProps) => {
     </div>
   );
 };
+
+export default ChangeSymbolModal;

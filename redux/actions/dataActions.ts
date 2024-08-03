@@ -1,7 +1,7 @@
 import { Dispatch } from 'redux'; // Import Dispatch type from redux
 import { ThunkAction } from 'redux-thunk'; // Import ThunkAction for async actions
-import { RootState, store } from '../store'; // Import RootState and store
-
+import { RootState } from '../store'; // Import RootState
+import store from '../store'; // Corrected import for store
 // Export the AppAction type
 export type AppAction = { type: 'UPDATE_SYMBOL'; payload: string } | { type: 'FETCH_DATA_SUCCESS'; payload: any } | { type: 'UNKNOWN_ACTION' };
 

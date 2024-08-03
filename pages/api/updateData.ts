@@ -25,11 +25,13 @@ async function storeData(data: any) {
     const collection = db.collection(collectionName);
 
     const operations = Object.keys(data).map((key) => ({
-      updateOne: {
-        filter: { id: key },
-        update: { $set: { price: data[key].usd, lastUpdated: new Date() } },
-        upsert: true,
-      },
+      insertOne: {
+        document: {
+          id: key,
+          price: data[key].usd,
+          lastUpdated: new Date()
+        }
+      }
     }));
 
     await collection.bulkWrite(operations);
@@ -44,15 +46,15 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   res.status(200).json({ message: 'Data updated successfully' });
 }
 
-async function pollData() {
-    try {
-      const data = await fetchData();
-      console.log('Data fetched:', data);
-      await storeData(data);
-    } catch (error) {
-      console.error('Error during data fetch or storage:', error);
-    }
-  }
+// async function pollData() {
+//     try {
+//       const data = await fetchData();
+//       console.log('Data fetched:', data);
+//       await storeData(data);
+//     } catch (error) {
+//       console.error('Error during data fetch or storage:', error);
+//     }
+//   }
   
-  // Start polling every 10 seconds (10000 milliseconds)
-  setInterval(pollData, 5000);
+//   // Start polling every 10 seconds (10000 milliseconds)
+//   setInterval(pollData, 5000);

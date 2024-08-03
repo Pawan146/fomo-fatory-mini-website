@@ -15,10 +15,15 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     const db = client.db(databaseName);
     const collection = db.collection(collectionName);
 
-    const data = await collection.find({ id: symbol })
-                                 .sort({ lastUpdated: -1 })
-                                 .limit(20)
-                                 .toArray();
+    let query = {};
+    if (symbol) {
+      query = { id: symbol };
+    }
+
+    const data = await collection.find(query)
+      .sort({ lastUpdated: -1 }) // This ensures we get the latest records
+      .limit(20)
+      .toArray();
 
     res.status(200).json(data);
   } catch (error) {
