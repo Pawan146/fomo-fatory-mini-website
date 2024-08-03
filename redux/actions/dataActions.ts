@@ -12,9 +12,14 @@ export const updateSymbol = (symbol: string): ThunkAction<void, RootState, unkno
 };
 
 export const fetchData = (symbol: string): ThunkAction<void, RootState, unknown, AppAction> => async (dispatch: Dispatch<AppAction>) => {
-  const response = await fetch(`/api/data?symbol=${symbol}`);
+  const response = await fetch(`/api/fetchData?symbol=${symbol}`);
   const data = await response.json();
   dispatch({ type: 'FETCH_DATA_SUCCESS', payload: data });
   const currentState = store.getState();
   localStorage.setItem('appState', JSON.stringify(currentState));
 };
+
+// Action to clear data entries
+export const clearData = () => ({
+  type: 'CLEAR_DATA_ENTRIES',
+});

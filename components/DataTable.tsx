@@ -1,43 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchData, AppAction } from '../redux/actions/dataActions';
+import { fetchData, AppAction, clearData } from '../redux/actions/dataActions';
 import ChangeSymbolModal  from './ChangeSymbolModal';
 import { ThunkAction } from 'redux-thunk';
-
-// Assuming the structure of your Redux state
-// interface RootState {
-//   data: {
-//     entries: any[]; // Replace 'any' with a more specific type if possible
-//     currentSymbol: string;
-//   };
-// }
-// const DataTable = () => {
-//   const [isModalOpen, setModalOpen] = useState(false);
-//   const dispatch = useDispatch();
-//   const entries = useSelector((state: RootState) => state.data.entries);
-//   const currentSymbol = useSelector((state: RootState) => state.data.currentSymbol);
-
-//   useEffect(() => {
-//     dispatch(fetchData(currentSymbol) as unknown as AppAction);
-//     const intervalId = setInterval(() => dispatch(fetchData(currentSymbol) as unknown as AppAction), 5000);
-//     return () => clearInterval(intervalId);
-//   }, [dispatch, currentSymbol]);
-
-//   const toggleModal = () => setModalOpen(!isModalOpen);
-
-//   return (
-//     <>
-//       <table>
-//         {/* Render table headers and rows based on entries */}
-//       </table>
-//       <button onClick={toggleModal}>Change Symbol</button>
-//       {isModalOpen && <ChangeSymbolModal onClose={toggleModal} />}
-//     </>
-//   );
-// };
-
-// export default DataTable;
-
 
 // Define a more specific type for data entries
 interface DataEntry {
@@ -62,6 +27,8 @@ const DataTable = () => {
 
   useEffect(() => {
     // Fetch initial data
+    dispatch(clearData());
+
     dispatch(fetchData(currentSymbol) as unknown as AppAction);
     // Set up interval for real-time updates
     const intervalId = setInterval(() => dispatch(fetchData(currentSymbol) as unknown as AppAction), 5000);
@@ -75,22 +42,22 @@ const DataTable = () => {
       <table>
         <thead>
           <tr>
-            <th>Symbol</th>
-            <th>Price</th>
-            <th>Timestamp</th>
+          <th style={{ paddingRight: "100px" }}>CryptoName</th>
+          <th style={{ paddingRight: "100px" }}>Price</th>
+          <th>Last Updated</th>
           </tr>
         </thead>
         <tbody>
           {entries.map((entry) => (
             <tr key={entry.id}>
-              <td>{entry.symbol}</td>
-              <td>{entry.price}</td>
-              <td>{entry.timestamp.toLocaleString()}</td>
-            </tr>
-          ))}
-        </tbody>
+            <td style={{ paddingRight: "20px" }}>{entry.id}</td>
+            <td style={{ paddingRight: "20px" }}>{entry.price}</td>
+            <td>{entry.timestamp?.toLocaleString() ?? 'N/A'}</td>
+        </tr>
+  ))}
+</tbody>
       </table>
-      <button onClick={toggleModal}>Change Symbol</button>
+      <button onClick={toggleModal}>Select Crypto</button>
       {isModalOpen && <ChangeSymbolModal onClose={toggleModal} />}
     </>
   );

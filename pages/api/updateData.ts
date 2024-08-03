@@ -3,7 +3,10 @@ import type { NextApiRequest, NextApiResponse } from 'next';
 import { MongoClient } from 'mongodb';
 import fetch from 'node-fetch';
 
-const uri = "mongodb://localhost:27017";
+const uri = process.env.MONGODB_URI;
+if (!uri) {
+  throw new Error('Please define the MONGODB_URI environment variable inside .env.local');
+}
 const databaseName = 'cryptoData'; // Replace with your database name
 const collectionName = 'prices'; // Replace with your collection name
 
@@ -29,7 +32,7 @@ async function storeData(data: any) {
         document: {
           id: key,
           price: data[key].usd,
-          lastUpdated: new Date()
+          timestamp: new Date()
         }
       }
     }));

@@ -14,23 +14,54 @@ pnpm dev
 bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+# Project Setup Instructions
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Cloning the Repository
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+1. Clone the repository to your local machine using the following command:
 
-## Learn More
+```bash
+git clone <repository-url>
 
-To learn more about Next.js, take a look at the following resources:
+2. Go to Project Directory
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+    cd <project-directory-name>
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+3. Dockerize the Application
 
-## Deploy on Vercel
+    docker-compose up --build
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+4. Access the Application
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+    The application is lifted on the URL:
+
+        Homepage: http://localhost:3000
+
+5. Check the Stock Page
+
+    To check the stock page, visit the URL:
+
+        Stock Page: http://localhost:3000/stock
+
+    
+6. Update/Add the Data
+
+    To update or add the data, call the API using:
+
+        curl --location --request POST 'http://localhost:3000/api/updateData'
+
+    
+7. Fetch the Data
+
+    To fetch the data, call the API using:
+
+        curl --location 'http://localhost:3000/api/fetchData?symbol=bitcoin'
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,29 @@
+version: '3.8'
+services:
+  web:
+    container_name: nextjs-app
+    build: .
+    ports:
+      - "3000:3000"
+    environment:
+      - MONGODB_URI=mongodb://mongo:27017
+    depends_on:
+      - mongo
+    networks:
+      - app-network
+
+  mongo:
+    container_name: mongo
+    image: mongo:latest
+    volumes:
+      - mongodb-data:/data/db
+    networks:
+      - app-network
+
+volumes:
+  mongodb-data:
+    driver: local
+
+networks:
+  app-network:
+    driver: bridge

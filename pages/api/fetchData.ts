@@ -1,7 +1,10 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 import { MongoClient } from 'mongodb';
 
-const uri = "mongodb://localhost:27017";
+const uri = process.env.MONGODB_URI;
+if (!uri) {
+  throw new Error('Please define the MONGODB_URI environment variable inside .env.local');
+}
 const databaseName = 'cryptoData';
 const collectionName = 'prices';
 
@@ -21,7 +24,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     }
 
     const data = await collection.find(query)
-      .sort({ lastUpdated: -1 }) // This ensures we get the latest records
+      .sort({ timestamp: -1 }) // This ensures we get the latest records
       .limit(20)
       .toArray();
 
