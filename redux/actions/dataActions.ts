@@ -3,7 +3,7 @@ import { ThunkAction } from 'redux-thunk'; // Import ThunkAction for async actio
 import { RootState } from '../store'; // Import RootState
 import store from '../store'; // Corrected import for store
 // Export the AppAction type
-export type AppAction = { type: 'UPDATE_SYMBOL'; payload: string } | { type: 'FETCH_DATA_SUCCESS'; payload: any } | { type: 'UNKNOWN_ACTION' };
+export type AppAction = { type: 'UPDATE_SYMBOL'; payload: string } | { type: 'FETCH_DATA_SUCCESS'; payload: any } | { type: 'UNKNOWN_ACTION' } | { type: 'CLEAR_DATA_ENTRIES' };
 
 export const updateSymbol = (symbol: string): ThunkAction<void, RootState, unknown, AppAction> => (dispatch: Dispatch<AppAction>) => {
   dispatch({ type: 'UPDATE_SYMBOL', payload: symbol });
@@ -12,10 +12,12 @@ export const updateSymbol = (symbol: string): ThunkAction<void, RootState, unkno
 };
 
 export const fetchData = (symbol: string): ThunkAction<void, RootState, unknown, AppAction> => async (dispatch: Dispatch<AppAction>) => {
+  console.log(`Fetching data for symbol: ${symbol}`);
   const response = await fetch(`/api/fetchData?symbol=${symbol}`);
   const data = await response.json();
   dispatch({ type: 'FETCH_DATA_SUCCESS', payload: data });
   const currentState = store.getState();
+  console.log('Current state:', currentState);
   localStorage.setItem('appState', JSON.stringify(currentState));
 };
 

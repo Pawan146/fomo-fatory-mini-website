@@ -26,12 +26,16 @@ const DataTable = () => {
   const currentSymbol = useSelector((state: RootState) => state.data.currentSymbol);
 
   useEffect(() => {
+    console.log('inside useEffect:  Fetching data...');
     // Fetch initial data
-    dispatch(clearData());
+   // dispatch(clearData());
 
     dispatch(fetchData(currentSymbol) as unknown as AppAction);
     // Set up interval for real-time updates
-    const intervalId = setInterval(() => dispatch(fetchData(currentSymbol) as unknown as AppAction), 5000);
+    const intervalId = setInterval(() => {
+      dispatch(clearData());
+      dispatch(fetchData(currentSymbol) as unknown as AppAction)}
+    , 5000);
     return () => clearInterval(intervalId);
   }, [dispatch, currentSymbol]);
 

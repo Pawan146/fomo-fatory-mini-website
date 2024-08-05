@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { updateSymbol, fetchData, AppAction } from '../redux/actions/dataActions'; // Import fetchData
+import { updateSymbol, fetchData, clearData, AppAction } from '../redux/actions/dataActions'; // Import fetchData
 
 interface ChangeSymbolModalProps {
   onClose: () => void;
@@ -16,12 +16,14 @@ const ChangeSymbolModal: React.FC<ChangeSymbolModalProps> = ({ onClose }) => {
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const action = updateSymbol(symbol) as unknown as AppAction;
+    dispatch(clearData()); 
     dispatch(action);
     setIsClearVisible(true); // Show "Clear" button after submit
     onClose(); // Close modal after dispatch
   };
 
   const handleClear = () => {
+    dispatch(clearData()); 
     dispatch(fetchData(symbol) as unknown as AppAction); // Call fetchData on "Clear" button click
     setIsClearVisible(false); // Optionally hide the "Clear" button after clicking
     onClose(); // Optionally close the modal
